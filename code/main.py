@@ -15,6 +15,7 @@ index_beam_rx_train, index_beam_rx_test, index_beam_tx_train, index_beam_tx_test
 #obj_classfier.classificador_KNeighbors(coord_train, coord_test, index_beam_tx_train, index_beam_tx_test)
 #obj_classfier.classificador_Randon_Forest(coord_train, coord_test, index_beam_tx_train, index_beam_tx_test)
 #obj_classfier.classificador_Decision_Tree(coord_train, coord_test, index_beam_tx_train, index_beam_tx_test)
+
 obj_classfier.classificador_svc(coord_train, coord_test, index_beam_tx_train, index_beam_tx_test)
 
 

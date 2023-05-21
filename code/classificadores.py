@@ -63,7 +63,8 @@ def classificador_svc(X_train, X_test, y_train, y_test):
     plt.ylim(min_y_lim, max_y_lim)
     plt.title("Definição dos Hiperparametros do classificador \n SVM com kernel= rbf", fontsize=16)
     plt.grid(True)
-    plt.show()
+    #plt.show()
+    plt.savefig('../results/svm/svm_tunning_gama.png')
 
     #-------------------------------------------------
 
@@ -90,7 +91,8 @@ def classificador_svc(X_train, X_test, y_train, y_test):
     plt.ylim(min_y_lim_c, max_y_lim_c)
     plt.title("Definição dos Hiperparametros do classificador \n SVM com kernel= rbf e Taxa de apre = 0.01", fontsize=16)
     plt.grid(True)
-    plt.show()
+    #plt.show()
+    plt.savefig('../results/svm/svm_tunning_c.png')
 
     a=0
 
@@ -110,12 +112,15 @@ def classificador_KNeighbors(X_train, X_test, y_train, y_test):
         scores_list.append(metrics.accuracy_score(y_test, y_pred))
 
     # Imprimindo acurácia
-    print("Nro de vizinhos: ", neighbors)
-    print("Acurácia: % s" % scores_list)
+    print("-------------------------------")
+    print("CLASIFICADOR KNEIGHBORS")
+    print("\t Nro de vizinhos: ", neighbors)
+    print("\t Acurácia: % s" % scores_list)
     max_accuracy = scores_list[scores_list.index(max(scores_list))]
     optimize_neighbor = neighbors[scores_list.index(max(scores_list))]
 
-    print("Valores otimos: Nro vizinhos ",optimize_neighbor,"Acuracia max ",max_accuracy)
+    print("\t Valores otimos: Nro vizinhos ",optimize_neighbor,"Acuracia max ",max_accuracy)
+    print("-------------------------------")
 
     plt.plot(neighbors, scores_list, 'r--')
     plt.plot(neighbors, scores_list, 'bo')
@@ -125,7 +130,9 @@ def classificador_KNeighbors(X_train, X_test, y_train, y_test):
     #plt.ylim(0.60, 0.70)
     plt.title("Definição dos Hiperparametros do classificador \n k-vizinhos", fontsize=16)
     plt.grid(True)
-    plt.show()
+    #plt.show()
+    plt.savefig('../results/k_neighbors/tunning_k_neighbors.png')
+
 
 def classificador_Decision_Tree(X_train, X_test, y_train, y_test):
 
@@ -147,40 +154,45 @@ def classificador_Decision_Tree(X_train, X_test, y_train, y_test):
     #               min_samples_leaf. minimo de amostras nos nós finais
 
     for k in range(len(deep_of_tree)):
-        clf = tree.DecisionTreeClassifier(max_depth=deep_of_tree[k], random_state=0)
+        clf = tree.DecisionTreeClassifier(max_depth=deep_of_tree[k], min_samples_leaf=158, random_state=0)
         clf = clf.fit(X_train, y_train)
         y_predict = clf.predict(X_test)
         scores_list.append(metrics.accuracy_score(y_test, y_predict))
 
-    print("Acuracia Decision Tree Classifier = ", scores_list)
+
+    print("-------------------------------")
+    print("CLASSIFICADOR DECISION TREE CLASSIFIER")
+    print("\t prof da arvore = ", deep_of_tree)
+    print("\t Acuracia = ", scores_list)
     accuracy_max = max(scores_list)
     index_acuracy_max = scores_list.index(accuracy_max)
     optimize_deep_tree = deep_of_tree[index_acuracy_max]
     min_lim_y = min(scores_list)-0.1
     max_lim_y = accuracy_max+0.1
 
-    print("Acuracia Max =", accuracy_max)
-    print("Profundidade da Arvore =", optimize_deep_tree)
+    print("\t *** Acuracia Max =", accuracy_max)
+    print("\t *** Profundidade da Arvore =", optimize_deep_tree)
 
 
     plt.plot(deep_of_tree, scores_list, 'r--')
     plt.plot(deep_of_tree, scores_list, 'bo')
-    plt.xlabel('Numero de maximo de Ramificaçoes da Arvore')
+    plt.xlabel('Profundidade da Arvore')
     plt.ylabel('Acurácia')
-    plt.text(optimize_deep_tree+0.02, accuracy_max+0.02, round(max(scores_list), 2))
+    plt.text(optimize_deep_tree+0.02, accuracy_max+0.02, round(max(scores_list), 3))
     plt.ylim(min_lim_y, max_lim_y)
     plt.title("Definição dos Hiperparametros do classificador \n Arvore de Decisão", fontsize=16)
     plt.grid(True)
+    plt.savefig('../results/Decision_tree/tunning_deep_of_tree.png')
     plt.show()
 
 
-    clf = tree.DecisionTreeClassifier(max_depth=7, random_state=0)
-    clf = clf.fit(X_train, y_train)
-    plt.figure(figsize=(15,10))
+    #clf = tree.DecisionTreeClassifier(max_depth=7, random_state=0)
+    #clf = clf.fit(X_train, y_train)
+    #plt.figure(figsize=(15,10))
 
-    plot_tree(clf, feature_names=['x', 'y', 'z'], class_names=['0', '1', '2', '3', '4', '5', '6', '7', '8'], fontsize=6)
-    plt.title('xxx')
-    plt.show()
+    #plot_tree(clf, feature_names=['x', 'y', 'z'], class_names=['0', '1', '2', '3', '4', '5', '6', '7', '8'], fontsize=6)
+    #plt.title('xxx')
+    #plt.show()
 
     scores_list = []
     accuracy_max = 0
@@ -189,41 +201,45 @@ def classificador_Decision_Tree(X_train, X_test, y_train, y_test):
     min_lim_y = 0
     max_lim_y = 0
     for i in range(len(samples_for_leaf)):
-        clf = tree.DecisionTreeClassifier(min_samples_leaf=samples_for_leaf[i], random_state=0)
+        clf = tree.DecisionTreeClassifier(min_samples_leaf=samples_for_leaf[i], max_depth=7, random_state=0)
         clf = clf.fit(X_train, y_train)
         y_predict = clf.predict(X_test)
         scores_list.append(metrics.accuracy_score(y_test, y_predict))
 
-    print("Acuracia Decision Tree Classifier = ", scores_list)
+    print("\t Amostras nas folhas finais = ", samples_for_leaf)
+    print("\t Acuracia = ", scores_list)
     accuracy_max = max(scores_list)
     index_acuracy_max = scores_list.index(accuracy_max)
     optimize_samples_for_leaf = samples_for_leaf[index_acuracy_max]
     min_lim_y = min(scores_list) - 0.1
     max_lim_y = accuracy_max + 0.1
 
-    print("Acuracia Max =", accuracy_max)
-    print("Numero de Amostras nas folhas finais =", optimize_samples_for_leaf)
+    print("\t *** Acuracia Max =", accuracy_max)
+    print("\t *** Numero de Amostras nas folhas finais =", optimize_samples_for_leaf)
 
     plt.plot(samples_for_leaf, scores_list, 'r--')
     plt.plot(samples_for_leaf, scores_list, 'bo')
     plt.xlabel('Numero de Amostras nas folhas finais')
     plt.ylabel('Acurácia')
-    plt.text(optimize_samples_for_leaf+0.02, accuracy_max+0.02, round(accuracy_max,2))
+    plt.text(optimize_samples_for_leaf+0.02, accuracy_max+0.02, round(accuracy_max,3))
     plt.title("Definição dos Hiperparametros do classificador \n Arvore de Decisão", fontsize=16)
     plt.ylim(min_lim_y, max_lim_y)
     plt.grid(True)
+    plt.savefig('../results/Decision_tree/tunning_samples_for_leaf.png')
     plt.show()
 
-    plt.figure()
-    plot_tree(clf, filled=True, fontsize=8)
-    plot_tree(clf,feature_names=['x','y','z'], class_names=['0','1','2','3','4','5','6','7','8'],fontsize=6)
-    plt.title('xxx')
-    plt.show()
+    #plt.figure()
+    #plot_tree(clf, filled=True, fontsize=8)
+    #plot_tree(clf,feature_names=['x','y','z'], class_names=['0','1','2','3','4','5','6','7','8'],fontsize=6)
+    #plt.title('xxx')
+    #plt.show()
 
 def classificador_Randon_Forest(X_train, X_test, y_train, y_test):
     '''Soa criadas varias arvores de decisao e o resultado sera a média de todas elas'''
 
-    print("Classificador Random Forest")
+
+    print("-------------------------------")
+    print("CLASSIFICADOR RADOM FOREST")
     n_samples, n_features = X_train.shape
     n_outputs = 8
 
@@ -241,8 +257,9 @@ def classificador_Randon_Forest(X_train, X_test, y_train, y_test):
         y_predict_1 = forest_1.predict(X_test)
         scores_list_1.append(metrics.accuracy_score(y_test, y_predict_1))
 
-    print("Nro Arvores : ", number_of_trees_big)
-    print("Acuracia : ", scores_list_1)
+
+    print("\t Nro Arvores : ", number_of_trees_big)
+    print("\t Acuracia : ", scores_list_1)
 
     accuracy_max_big = max(scores_list_1)
     index_acuracy_max_big = scores_list_1.index(accuracy_max_big)
@@ -250,9 +267,9 @@ def classificador_Randon_Forest(X_train, X_test, y_train, y_test):
     min_lim_y_big = min(scores_list_1) - 0.05
     max_lim_y_big = accuracy_max_big + 0.05
 
-    print("Quantidade de arvores otimas = ",optimize_number_of_trees_big)
-    print("Acurácia Max = ",accuracy_max_big)
-    print("---------------------------------")
+    print("\t *** Quantidade de arvores otimas = ",optimize_number_of_trees_big)
+    print("\t *** Acurácia Max = ",accuracy_max_big)
+    print("\t ---------------------------------")
 
 
 
@@ -262,8 +279,8 @@ def classificador_Randon_Forest(X_train, X_test, y_train, y_test):
         y_predict = forest.predict(X_test)
         scores_list.append(metrics.accuracy_score(y_test, y_predict))
 
-    print("Nro Arvores : ", number_of_trees)
-    print("Acuracia : ", scores_list)
+    print("\t Nro Arvores : ", number_of_trees)
+    print("\t Acuracia : ", scores_list)
 
     accuracy_max = max(scores_list)
     index_acuracy_max = scores_list.index(accuracy_max)
@@ -271,8 +288,8 @@ def classificador_Randon_Forest(X_train, X_test, y_train, y_test):
     min_lim_y = min(scores_list) - 0.1
     max_lim_y = accuracy_max + 0.1
 
-    print("Acuracia Max =", accuracy_max)
-    print("Quantidade de Arvores =", optimize_number_of_trees)
+    print("\t *** Acuracia Max =", accuracy_max)
+    print("\t *** Quantidade de Arvores =", optimize_number_of_trees)
 
 
     plt.subplot(2,1,2)
@@ -294,6 +311,7 @@ def classificador_Randon_Forest(X_train, X_test, y_train, y_test):
     plt.grid(True)
 
     plt.suptitle("Definição dos Hiperparametros do classificador \n Random Forest", fontsize=16)
+    plt.savefig('../results/random_forest/tunning_number_of_trees.png')
     plt.show()
     a=0
     #---------------------------------------------------------------------------------------------
@@ -310,15 +328,17 @@ def classificador_Randon_Forest(X_train, X_test, y_train, y_test):
         y_predict = forest.predict(X_test)
         scores_list.append(metrics.accuracy_score(y_test, y_predict))
 
-    print("Acuracia com Random Forest com variacao de minimo numero de amostras nas folhas das arvores: ", scores_list)
+    print("\t min quant de amostras nas folhas = ", samples_in_leaf)
+    print("\t Acuracia = ", scores_list)
+
     accuracy_max = max(scores_list)
     index_acuracy_max = scores_list.index(accuracy_max)
     optimize_number_of_samples_in_leaf = samples_in_leaf[index_acuracy_max]
     min_lim_y = min(scores_list) - 0.05
     max_lim_y = accuracy_max + 0.05
 
-    print("Acuracia Max =", accuracy_max)
-    print("Quantidade de amostras nas folhas das Arvores =", optimize_number_of_samples_in_leaf)
+    print("\t *** Acuracia Max =", accuracy_max)
+    print("\t *** Quantidade de amostras nas folhas das Arvores =", optimize_number_of_samples_in_leaf)
 
     plt.plot(samples_in_leaf, scores_list, 'r--')
     plt.plot(samples_in_leaf, scores_list, 'bo')
@@ -328,5 +348,6 @@ def classificador_Randon_Forest(X_train, X_test, y_train, y_test):
     plt.title("Definição dos Hiperparametros do classificador \n Random Forest", fontsize=16)
     plt.ylim(min_lim_y, max_lim_y)
     plt.grid(True)
-    plt.show()
+    plt.savefig('../results/random_forest/tunning_samples_in_leaf.png')
+    #plt.show()
 
