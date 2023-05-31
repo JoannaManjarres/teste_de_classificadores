@@ -26,7 +26,7 @@ def plot_results(x_data, y_data, x_label, y_label, x_pos_tex, y_pos_tex, text, m
     plt.grid(True)
     # plt.show()
     plt.savefig(path + name_figure)
-def classificador_svc(X_train, X_test, y_train, y_test, antenna_conf, data_set, type_of_beams):
+def classificador_svc(X_train, X_test, y_train, y_test, antenna_conf, data_set, type_of_beams, data_input):
     '''Support Vector Classifier (SVC) is a form of Support Vector Machines (SVM)
     capable of categorizing inputs under supervised training.'''
 
@@ -49,7 +49,7 @@ def classificador_svc(X_train, X_test, y_train, y_test, antenna_conf, data_set, 
     )
     '''
 
-    print("Tuning Hyperparameters for SVM classifier for antenna confi", antenna_conf, "com o dataset: ", data_set)
+    print("Tuning Hyperparameters for SVM classifier for: \n antenna config", antenna_conf, "\n dataset: ", data_set,"\n input: ", data_input)
     c = [0.1, 1, 10, 100, 1000, 2000]
     gamma = [1, 0.1, 0.01, 0.001, 0.0001] #Taxa de aprendizado
     kernel = 'rbf' #examples for kernel: 'rbf', 'precomputed', 'linear', 'sigmoid', 'poly'
@@ -76,11 +76,13 @@ def classificador_svc(X_train, X_test, y_train, y_test, antenna_conf, data_set, 
     x_pos_tex = optimize_learn_rate+0.0001
     y_pos_tex = max_accuracy
     text = round(max_accuracy, 4)
-    title_figure = 'Definição dos Hiperparametros do classificador SVM \n kernel= rbf conf da antena '+ antenna_conf +', Dataset: '+ data_set+type_of_beams
-    path = '../results/svm/'+antenna_conf+'/'+data_set+'/'
-    name_figure = 'svm_tunning_gama_'+antenna_conf+'_'+data_set+'_'+type_of_beams+'.png'
+    title_figure = 'Definição dos Hiperparametros do classificador SVM \n kernel= rbf conf da antena '+ antenna_conf +', Dataset: '+ data_set+' '+type_of_beams + ' input: '+data_input
+    path = '../results/svm/' + antenna_conf + '/' + data_set + '/' + data_input+'/'
+    name_figure = 'svm_tunning_gama_'+antenna_conf+'_'+data_set+'_'+type_of_beams+'_'+data_input+'.png'
 
     plot_results(x_data, y_data, x_label, y_label, x_pos_tex, y_pos_tex, text, min_y_lim, max_y_lim, title_figure, path, name_figure)
+
+
 
     #-------------------------------------------------
 
@@ -133,7 +135,7 @@ def classificador_svc(X_train, X_test, y_train, y_test, antenna_conf, data_set, 
     )
 
 
-def classificador_KNeighbors(X_train, X_test, y_train, y_test, antenna_conf, data_set, type_of_beams):
+def classificador_KNeighbors(X_train, X_test, y_train, y_test, antenna_conf, data_set, type_of_beams, data_input):
     k_range = range(10, 400, 20)
     neighbors = [30, 40, 80, 120,154,156,158,160,162,164,166,168,200,240,280]
     scores_list = []
@@ -167,9 +169,9 @@ def classificador_KNeighbors(X_train, X_test, y_train, y_test, antenna_conf, dat
     text = round(max(scores_list), 4)
     min_y_lim = min(scores_list)-0.1
     max_y_lim = max(scores_list)+0.1
-    title_figure = 'Definição dos Hiperparametros do classificador k-vizinhos \n conf da antena ' + antenna_conf + ', Dataset:' + data_set + type_of_beams
-    path ='../results/k_neighbors/'+ antenna_conf + '/' + data_set+'/'
-    name_figure = 'tunning_k_vizinhos_' + antenna_conf + '_' + data_set + '_'+type_of_beams+'.png'
+    title_figure = 'Definição dos Hiperparametros do classificador k-vizinhos \n conf da antena ' + antenna_conf + ', Dataset:' + data_input+'_'+data_set +'_'+ type_of_beams
+    path ='../results/k_neighbors/'+ antenna_conf + '/' + data_set+'/'+data_input+'/'
+    name_figure = 'tunning_k_vizinhos_' + antenna_conf + '_' + data_set + '_'+type_of_beams+'_' + data_input +'.png'
 
     plot_results(x_data, y_data, x_label, y_label, x_pos_tex, y_pos_tex, text, min_y_lim, max_y_lim, title_figure, path,
                  name_figure)
@@ -186,7 +188,7 @@ def classificador_KNeighbors(X_train, X_test, y_train, y_test, antenna_conf, dat
     #plt.savefig('../results/k_neighbors/tunning_k_neighbors.png')
 
 
-def classificador_Decision_Tree(X_train, X_test, y_train, y_test, antenna_conf, data_set, type_user):
+def classificador_Decision_Tree(X_train, X_test, y_train, y_test, antenna_conf, data_set, type_user, data_input):
 
     '''Decision Trees (DTs) are a non-parametric supervised learning method
     used for classification and regression. The goal is to create a model that
@@ -214,6 +216,7 @@ def classificador_Decision_Tree(X_train, X_test, y_train, y_test, antenna_conf, 
 
     print("-------------------------------")
     print("CLASSIFICADOR DECISION TREE CLASSIFIER")
+    print("Input:", data_input, "antenna config: ", antenna_conf, " Dataset: ", data_set, "beam type: ", type_user)
     print("\t prof da arvore = ", deep_of_tree)
     print("\t Acuracia = ", scores_list)
     accuracy_max = max(scores_list)
@@ -234,9 +237,9 @@ def classificador_Decision_Tree(X_train, X_test, y_train, y_test, antenna_conf, 
     text = round(max(scores_list), 3)
     min_y_lim = min_lim_y
     max_y_lim = max_lim_y
-    title_figure = 'Definição dos Hiperparametros do classificador Arvore de Decisão  \n '+ ', config da antena ' + antenna_conf + ', Dataset:' + data_set + type_user
-    name_figure = 'tunning_deep_of_tree_' + antenna_conf + '_' + data_set +'_'+type_user+ '.png'
-    path = '../results/Decision_tree/'+antenna_conf+'/'+data_set+'/'
+    title_figure = 'Definição dos Hiperparametros do classificador Arvore de Decisão  \n '+ ', config da antena ' + antenna_conf + ', Dataset:' + data_set + ' ' + type_user+', input: '+data_input
+    name_figure = 'tunning_deep_of_tree_' + antenna_conf + '_' + data_set + '_' + type_user + '_' + data_input+'.png'
+    path = '../results/Decision_tree/'+antenna_conf+'/'+data_set+'/'+data_input+'/'
     plot_results(x_data, y_data, x_label, y_label, x_pos_tex, y_pos_tex, text, min_y_lim, max_y_lim, title_figure, path,
                  name_figure)
 
@@ -282,9 +285,9 @@ def classificador_Decision_Tree(X_train, X_test, y_train, y_test, antenna_conf, 
     text = round(accuracy_max,3)
     min_y_lim = min_lim_y
     max_y_lim = max_lim_y
-    title_figure = 'Definição dos Hiperparametros do classificador Arvore de Decisão  \n ' + ', prof da arvpore: '+str(deep_of_tree[index_acuracy_max])+', config da antena: ' + antenna_conf + ', Dataset:' + data_set + type_user
+    title_figure = 'Definição dos Hiperparametros do classificador Arvore de Decisão  \n ' + ', prof da arvore: '+str(deep_of_tree[index_acuracy_max])+', config da antena: ' + antenna_conf + ', Dataset:' + data_set +' tipo de Beam: '+ type_user +' tipo de entrada: '+ data_input
     name_figure = 'tunning_samples_for_leaf_' + antenna_conf + '_' + data_set +'_'+type_user+ '.png'
-    path = '../results/Decision_tree/' + antenna_conf + '/' + data_set + '/'
+    #path = '../results/Decision_tree/' + antenna_conf + '/' + data_set + '/'
     plot_results(x_data, y_data, x_label, y_label, x_pos_tex, y_pos_tex, text, min_y_lim, max_y_lim, title_figure, path,
                  name_figure)
     '''
@@ -305,12 +308,13 @@ def classificador_Decision_Tree(X_train, X_test, y_train, y_test, antenna_conf, 
     #plt.title('xxx')
     #plt.show()
 
-def classificador_Randon_Forest(X_train, X_test, y_train, y_test, antenna_conf, data_set,type_of_beams):
+def classificador_Randon_Forest(X_train, X_test, y_train, y_test, antenna_conf, data_set,type_of_beams, data_input):
     '''Soa criadas varias arvores de decisao e o resultado sera a média de todas elas'''
 
 
     print("-------------------------------")
     print("CLASSIFICADOR RADOM FOREST")
+    print("Input = ", data_input, "antenna config", antenna_conf, "Dataset = ", data_set, "Beam Type = ", type_of_beams )
     n_samples, n_features = X_train.shape
     n_outputs = 8
 
@@ -381,9 +385,9 @@ def classificador_Randon_Forest(X_train, X_test, y_train, y_test, antenna_conf, 
     plt.ylim(min_lim_y_big, max_lim_y_big)
     plt.grid(True)
 
-    plt.suptitle("Definição dos Hiperparametros do classificador  Random Forest \n config antena: "+antenna_conf+" Dataset: "+data_set+'_'+type_of_beams, fontsize=12)
-    path = '../results/random_forest/'+ antenna_conf +'/' + data_set +'/'
-    plt.savefig(path + 'tunning_number_of_trees_'+antenna_conf+'_'+data_set+'_'+type_of_beams+'.png')
+    plt.suptitle("Definição dos Hiperparametros do classificador  Random Forest \n config antena: "+antenna_conf+" Dataset: "+data_set+'_'+type_of_beams+"Input: "+data_input, fontsize=12)
+    path = '../results/random_forest/'+ antenna_conf +'/' + data_set +'/'+data_input+'/'
+    plt.savefig(path + 'tunning_number_of_trees_'+antenna_conf+'_'+data_set+'_'+type_of_beams+'_'+data_input+'.png')
     plt.show()
     a=0
     #---------------------------------------------------------------------------------------------
