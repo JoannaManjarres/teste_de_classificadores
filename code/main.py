@@ -83,10 +83,14 @@ elif data_set =='NLOS':
 
 #obj_classfier.classificador_KNeighbors(x_train, x_test, y_train, y_test, antenna_conf, data_set, type_of_beams,data_input)
 #obj_classfier.classificador_Randon_Forest(x_train, x_test, y_train, y_test, antenna_conf, data_set, type_of_beams, data_input)
-
 #obj_classfier.classificador_Decision_Tree(x_train, x_test, y_train, y_test, antenna_conf, data_set, type_of_beams, data_input)
-
 #obj_classfier.classificador_svc(x_train, x_test, y_train, y_test, antenna_conf, data_set, type_of_beams,data_input)
-obj_class_top_k.classificador_svc_top_k(x_train, x_test, y_train, y_test, antenna_conf, data_set, type_of_beams,data_input)
+
+
+
+#obj_class_top_k.classificador_svc_top_k(x_train, x_test, y_train, y_test, antenna_conf, data_set, type_of_beams,data_input)
+#obj_class_top_k.classificador_Randon_Forest_top_k(x_train, x_test, y_train, y_test, antenna_conf, data_set, type_of_beams,data_input)
+obj_class_top_k.classificador_KNeighbors_top_k (x_train, x_test, y_train, y_test, antenna_conf, data_set, type_of_beams,data_input)
+#obj_class_top_k.classificador_Decision_Tree_top_k (x_train, x_test, y_train, y_test, antenna_conf, data_set, type_of_beams,data_input)
 
 a=0
