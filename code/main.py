@@ -2,6 +2,7 @@ import coordinates as obj_coord
 import beams as obj_beam
 import classificadores as obj_classfier
 import lidar as obj_lidar
+import classificadores_top_k as obj_class_top_k
 
 #test()
 
@@ -16,7 +17,7 @@ data_input = ['coord','LiDAR']
 all_info = obj_coord.read_coordinates()
 valid_coord_train, valid_coord_test, coord_LOS_train, coord_LOS_test, coord_NLOS_train, coord_NLOS_test = obj_coord.all_valid_LOS_NLOS_coord(all_info)
 
-data_input = 'LiDAR'
+data_input = 'coord'
 data_set = 'LOS'
 type_of_beams = 'combined'
 
@@ -85,7 +86,7 @@ elif data_set =='NLOS':
 
 #obj_classfier.classificador_Decision_Tree(x_train, x_test, y_train, y_test, antenna_conf, data_set, type_of_beams, data_input)
 
-obj_classfier.classificador_svc(x_train, x_test, y_train, y_test, antenna_conf, data_set, type_of_beams,data_input)
-
+#obj_classfier.classificador_svc(x_train, x_test, y_train, y_test, antenna_conf, data_set, type_of_beams,data_input)
+obj_class_top_k.classificador_svc_top_k(x_train, x_test, y_train, y_test, antenna_conf, data_set, type_of_beams,data_input)
 
 a=0
