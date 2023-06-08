@@ -85,7 +85,7 @@ def classificador_svc_top_k(X_train, X_test, y_train, y_test, antenna_conf, data
 
     return acuracia
 
-def classificador_Randon_Forest_top_k(X_train, X_test, y_train, y_test, antenna_conf, data_set,type_of_beams, data_input):
+def classificador_Random_Forest_top_k(X_train, X_test, y_train, y_test, antenna_conf, data_set,type_of_beams, data_input):
     '''Soa criadas varias arvores de decisao e o resultado sera a média de todas elas'''
 
     print("---------------------------------")
