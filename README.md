@@ -1,1 +1,2 @@
-# teste_de_classificadores
+# Realiza selecao de Beams com diferentes tecnicas
+SVC, KNeighboorhs, Random Forest, ...
